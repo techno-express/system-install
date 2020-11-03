@@ -144,6 +144,9 @@ describe('Method: `installer` install package `???`', function () {
     it('should return an error for any issues installing package', function (done) {
         if (testPlatformData != 'win32') {
             installer('???')
+                .then(function (data) {
+                    done(data);
+                })
                 .catch(function (err) {
                     expect(err).to.be.an.instanceof(Error);
                     done();
@@ -182,7 +185,6 @@ describe('Method: `installer` install packages `unzip` and `nano`', function () 
                     done();
                 })
                 .catch(function (err) {
-                    console.log(err);
                     expect(err).to.be.an.instanceof(Error);
                     done();
                 });
