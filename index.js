@@ -113,14 +113,22 @@
                     stdio: 'pipe'
                 });
 
-                spawn.on('error', (err) => reject(Error(err)));
-                spawn.on('close', () => resolve(installOutput));
-                spawn.on('exit', () => resolve(installOutput));
+                spawn.on('error', (err) => {
+                    return reject(Error(err));
+                });
+                spawn.on('close', () => {
+                    return resolve(installOutput);
+                });
+                spawn.on('exit', () => {
+                    return resolve(installOutput);
+                });
 
                 spawn.stdout.on('data', (data) => {
                     installOutput += data.toString();
                 });
-                spawn.stderr.on('data', (data) => reject(Error(data.toString())));
+                spawn.stderr.on('data', (data) => {
+                    return reject(Error(data.toString()));
+                });
             } else if (process.platform == 'win32' && cmd == 'powershell') {
                 const PowerShell = require("powershell");
                 console.log('Download and Install Chocolatey');
@@ -128,9 +136,13 @@
                     executionpolicy: 'Unrestricted'
                 });
 
-                ps.on('error', (err) => reject(Error(err)));
+                ps.on('error', (err) => {
+                    return reject(Error(err));
+                });
                 ps.on('output', (data) => console.log(data));
-                ps.on('error-output', (data) => reject(Error(data)));
+                ps.on('error-output', (data) => {
+                    return reject(Error(data));
+                });
 
                 ps.on('end', () => {
                     console.log('Running choco install ' + whatToInstall);
@@ -138,12 +150,20 @@
                         stdio: 'pipe'
                     });
 
-                    spawn.on('error', (err) => reject(Error(result.error)));
-                    spawn.on('close', (code) => resolve(code));
-                    spawn.on('exit', (code) => resolve(code));
+                    spawn.on('error', (err) => {
+                        return reject(Error(result.error));
+                    });
+                    spawn.on('close', (code) => {
+                        return resolve(code);
+                    });
+                    spawn.on('exit', (code) => {
+                        return resolve(code);
+                    });
 
                     spawn.stdout.on('data', (data) => console.log(data.toString()));
-                    spawn.stderr.on('data', (data) => reject(Error(data.toString())));
+                    spawn.stderr.on('data', (data) => {
+                        return reject(Error(data.toString()));
+                    });
                 });
             } else
                 return reject(Error('No windows package manager installed!'));
@@ -152,6 +172,6 @@
 
     installCommand();
 
-    function installCommand() { }
+    function installCommand() {}
 
 })();
