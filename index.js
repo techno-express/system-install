@@ -39,7 +39,7 @@
 
         var managers = PKG_MANAGERS[process.platform];
         if (!managers || !managers.length) {
-            return reject(Error('unknown platform \'' + process.platform + '\''));
+            return reject('unknown platform \'' + process.platform + '\'');
         }
 
         managers = managers.filter(function (mng) {
@@ -53,7 +53,7 @@
         });
 
         if (!managers.length) {
-            return reject(Error('your_package_manager install'));
+            return reject('your package_manager not found');
         }
 
         return INSTALL_CMD[managers[0]].split(' ');
@@ -95,7 +95,7 @@
     installCommand.installer = function installer(application) {
         var installOutput = '';
         return new Promise(function (resolve, reject) {
-            if (!application) return reject(Error("Error: No package, application name missing."));
+            if (!application) return reject("No package, application name missing.");
 
             var system_installer = package_manager(reject);
             var cmd = system_installer[0];
@@ -109,12 +109,16 @@
 
             if (cmd != 'powershell') {
                 console.log('Running ' + cmd + ' ' + system);
+                if (system.includes('node-fake-tester')) {
+                    return resolve('For testing only, no package installed.');
+                }
+
                 const spawn = child_process.spawn(cmd, system, {
                     stdio: 'pipe'
                 });
 
                 spawn.on('error', (err) => {
-                    return reject(Error(err));
+                    return reject(err);
                 });
                 spawn.on('close', () => {
                     return resolve(installOutput);
@@ -125,9 +129,12 @@
 
                 spawn.stdout.on('data', (data) => {
                     installOutput += data.toString();
+                    if (data.includes('The package was not found')) {
+                        return reject(data.toString());
+                    }
                 });
                 spawn.stderr.on('data', (data) => {
-                    return reject(Error(data.toString()));
+                    return reject(data.toString());
                 });
             } else if (process.platform == 'win32' && cmd == 'powershell') {
                 const PowerShell = require("powershell");
@@ -137,11 +144,11 @@
                 });
 
                 ps.on('error', (err) => {
-                    return reject(Error(err));
+                    return reject(err);
                 });
                 ps.on('output', (data) => console.log(data));
                 ps.on('error-output', (data) => {
-                    return reject(Error(data));
+                    return reject(data);
                 });
 
                 ps.on('end', () => {
@@ -151,7 +158,7 @@
                     });
 
                     spawn.on('error', (err) => {
-                        return reject(Error(result.error));
+                        return reject(err);
                     });
                     spawn.on('close', (code) => {
                         return resolve(code);
@@ -162,11 +169,11 @@
 
                     spawn.stdout.on('data', (data) => console.log(data.toString()));
                     spawn.stderr.on('data', (data) => {
-                        return reject(Error(data.toString()));
+                        return reject(data.toString());
                     });
                 });
             } else
-                return reject(Error('No windows package manager installed!'));
+                return reject('No package manager installed!');
         });
     }
 

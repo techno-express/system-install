@@ -46,7 +46,7 @@ describe('Method: `packager` for platform set to `netbsd`', function () {
     after(function () { Object.defineProperty(process, 'platform', this.originalPlatform); });
 
     it('should return an error for no package manager found', function (done) {
-        expect(system()).to.be.an.instanceof(Error);
+        expect(system()).match(/your package_manager not found/i);
         done();
     });
 });
@@ -72,7 +72,7 @@ describe('Method: `installer`', function () {
     it('should return an error for no package, application name missing', function (done) {
         installer(null)
             .catch(function (err) {
-                expect(err).to.be.an.instanceof(Error);
+                expect(err).match(/No package, application name missing./i);
                 done();
             });
     });
@@ -91,7 +91,7 @@ describe('Method: `installer` for platform set to `other`', function () {
     it('should return an error for unknown platform', function (done) {
         installer('winrar')
             .catch(function (err) {
-                expect(err).to.be.an.instanceof(Error);
+                expect(err).match(/unknown platform./i);
                 done();
             });
     });
@@ -110,7 +110,7 @@ describe('Method: `installer` for platform set to `test`', function () {
     it('should return an error for no real package manager command', function (done) {
         installer('winrar')
             .catch(function (err) {
-                expect(err).to.be.an.instanceof(Error);
+                expect(err).match(/unknown platform/i);
                 done();
             });
     });
@@ -127,52 +127,31 @@ describe('Method: `packager` for platform set to `win32`', function () {
     // restore original process.platform
     after(function () { Object.defineProperty(process, 'platform', this.originalPlatform); });
 
-    it('should return an error for no windows package manager installed or nothing', function (done) {
-        if (testPlatformData != 'win32') {
-            installer('winrar')
-                .catch(function (err) {
-                    expect(err).to.be.an.instanceof(Error);
-                    done();
-                });
-        } else {
-            done();
-        }
-    });
-});
-
-describe('Method: `installer` install package `vim`', function () {
-    it('should return on successful install or errors if windows', function (done) {
-
-        if (testPlatformData != 'win32') {
-            installer('vim')
-                .then(function (data) {
-                    expect(data).to.be.a('string');
-                    done();
-                })
-                .catch(function (err) {
-                    expect(err).to.be.an.instanceof(Error);
-                    done();
-                });
-        } else {
-            done();
-        }
+    it('should return on successfully for testing only, no package installed', function (done) {
+        installer('node-fake-tester')
+            .then(function (data) {
+                expect(data).match(/For testing only, no package installed./i);
+                done();
+            })
     });
 });
 
 describe('Method: `installer` install packages `unzip` and `nano`', function () {
-    it('should return on successful install of multiple packages or print error log if windows platform', function (done) {
+    it('should return on successful install of multiple packages or print error on unknown platform', function (done) {
         if (testPlatformData != 'win32') {
-            installer(['unzip', 'nano'])
-                .then(function (data) {
-                    expect(data).to.be.a('string');
-                    done();
-                })
-                .catch(function (err) {
-                    expect(err).to.be.an.instanceof(Error);
-                    done();
-                });
+            var multi = ['unzip', 'nano'];
         } else {
-            done();
+            var multi = ['unzip', 'nano', 'node-fake-tester'];
         }
+
+        installer(multi)
+            .then(function (data) {
+                expect(data).to.be.a('string');
+                done();
+            })
+            .catch(function (err) {
+                expect(err).match(/No package manager installed!/i);
+                done();
+            });
     });
 });
