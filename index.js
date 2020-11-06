@@ -129,7 +129,7 @@
                         return resolve('For testing only, no package installed.');
                     }
 
-                    if (data.includes('The package was not found')) {
+                    if (data.includes('The package was not found') || data.includes('Unable to locate package')) {
                         return reject(data.toString());
                     }
                 });
