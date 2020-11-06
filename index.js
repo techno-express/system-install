@@ -136,10 +136,11 @@
                     }
                 });
                 spawn.stderr.on('data', (data) => {
+                    spawn.kill('SIGKILL');
                     return reject(data.toString());
                 });
 
-            } else if (process.platform == 'win32' && cmd == 'powershell') {
+            }/* else if (process.platform == 'win32' && cmd == 'powershell') {
                 const PowerShell = require("powershell");
                 console.log('Download and Install Chocolatey');
                 const ps = new PowerShell("Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))", {
@@ -175,8 +176,10 @@
                         return reject(data.toString());
                     });
                 });
-            } else
+            } */
+            else {
                 return reject('No package manager installed!');
+            }
         });
     }
 

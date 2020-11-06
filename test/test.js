@@ -24,10 +24,14 @@ describe('Method: `packager` for platform set to `other`', function () {
     before(function () {
         this.originalPlatform = Object.getOwnPropertyDescriptor(process, 'platform');
         // redefine process.platform
-        Object.defineProperty(process, 'platform', { value: 'other' });
+        Object.defineProperty(process, 'platform', {
+            value: 'other'
+        });
     });
     // restore original process.platform
-    after(function () { Object.defineProperty(process, 'platform', this.originalPlatform); });
+    after(function () {
+        Object.defineProperty(process, 'platform', this.originalPlatform);
+    });
 
     it('should return an error for unknown platform', function (done) {
         expect(system()).to.be.an.instanceof(Error);
@@ -40,10 +44,14 @@ describe('Method: `packager` for platform set to `netbsd`', function () {
     before(function () {
         this.originalPlatform = Object.getOwnPropertyDescriptor(process, 'platform');
         // redefine process.platform
-        Object.defineProperty(process, 'platform', { value: 'netbsd' });
+        Object.defineProperty(process, 'platform', {
+            value: 'netbsd'
+        });
     });
     // restore original process.platform
-    after(function () { Object.defineProperty(process, 'platform', this.originalPlatform); });
+    after(function () {
+        Object.defineProperty(process, 'platform', this.originalPlatform);
+    });
 
     it('should return an error for no package manager found', function (done) {
         expect(system()).match(/your package_manager not found/i);
@@ -56,10 +64,14 @@ describe('Method: `packager` for platform set to `win32`', function () {
     before(function () {
         this.originalPlatform = Object.getOwnPropertyDescriptor(process, 'platform');
         // redefine process.platform
-        Object.defineProperty(process, 'platform', { value: 'win32' });
+        Object.defineProperty(process, 'platform', {
+            value: 'win32'
+        });
     });
     // restore original process.platform
-    after(function () { Object.defineProperty(process, 'platform', this.originalPlatform); });
+    after(function () {
+        Object.defineProperty(process, 'platform', this.originalPlatform);
+    });
 
     it('should return `false` for need sudo', function (done) {
         var sudo = system();
@@ -83,10 +95,14 @@ describe('Method: `installer` for platform set to `other`', function () {
     before(function () {
         this.originalPlatform = Object.getOwnPropertyDescriptor(process, 'platform');
         // redefine process.platform
-        Object.defineProperty(process, 'platform', { value: 'other' });
+        Object.defineProperty(process, 'platform', {
+            value: 'other'
+        });
     });
     // restore original process.platform
-    after(function () { Object.defineProperty(process, 'platform', this.originalPlatform); });
+    after(function () {
+        Object.defineProperty(process, 'platform', this.originalPlatform);
+    });
 
     it('should return an error for unknown platform', function (done) {
         installer('winrar')
@@ -107,7 +123,7 @@ describe('Method: `installer` install packages `unzip` and `nano`', function () 
                 done();
             })
             .catch(function (err) {
-                expect(err).match(/No package manager installed!/i);
+                expect(err).to.be.an.instanceof(Error);
                 done();
             });
     });
