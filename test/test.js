@@ -97,52 +97,9 @@ describe('Method: `installer` for platform set to `other`', function () {
     });
 });
 
-describe('Method: `installer` for platform set to `test`', function () {
-    // save original process.platform
-    before(function () {
-        this.originalPlatform = Object.getOwnPropertyDescriptor(process, 'platform');
-        // redefine process.platform
-        Object.defineProperty(process, 'platform', { value: 'test' });
-    });
-    // restore original process.platform
-    after(function () { Object.defineProperty(process, 'platform', this.originalPlatform); });
-
-    it('should return an error for no real package manager command', function (done) {
-        installer('winrar')
-            .catch(function (err) {
-                expect(err).match(/unknown platform/i);
-                done();
-            });
-    });
-});
-
-describe('Method: `packager` for platform set to `win32`', function () {
-    // save original process.platform
-    before(function () {
-        this.originalPlatform = Object.getOwnPropertyDescriptor(process, 'platform');
-        testPlatformData = this.originalPlatform.value;
-        // redefine process.platform
-        Object.defineProperty(process, 'platform', { value: 'win32' });
-    });
-    // restore original process.platform
-    after(function () { Object.defineProperty(process, 'platform', this.originalPlatform); });
-
-    it('should return on successfully for testing only, no package installed', function (done) {
-        installer('node-fake-tester')
-            .then(function (data) {
-                expect(data).match(/For testing only, no package installed./i);
-                done();
-            })
-    });
-});
-
 describe('Method: `installer` install packages `unzip` and `nano`', function () {
     it('should return on successful install of multiple packages or print error on unknown platform', function (done) {
-        if (testPlatformData != 'win32') {
-            var multi = ['unzip', 'nano'];
-        } else {
-            var multi = ['unzip', 'nano', 'node-fake-tester'];
-        }
+        var multi = ['unzip', 'nano', 'node-fake-tester'];
 
         installer(multi)
             .then(function (data) {
