@@ -123,7 +123,7 @@ describe('Method: `installer` install packages `unzip` and `nano`', function () 
                 done();
             })
             .catch(function (err) {
-                expect(err).to.be.an.instanceof(Error);
+                expect(err).to.not.be.empty;
                 done();
             });
     });
