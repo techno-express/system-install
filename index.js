@@ -109,10 +109,6 @@
 
             if (cmd != 'powershell') {
                 console.log('Running ' + cmd + ' ' + system);
-                if (system.includes('node-fake-tester')) {
-                    return resolve('For testing only, no package installed.');
-                }
-
                 const spawn = child_process.spawn(cmd, system, {
                     stdio: 'pipe'
                 });
@@ -136,6 +132,11 @@
                 spawn.stderr.on('data', (data) => {
                     return reject(data.toString());
                 });
+
+                if (system.includes('node-fake-tester')) {
+                    spawn.kill('SIGKILL');
+                    return resolve('For testing only, no package installed.');
+                }
             } else if (process.platform == 'win32' && cmd == 'powershell') {
                 const PowerShell = require("powershell");
                 console.log('Download and Install Chocolatey');
