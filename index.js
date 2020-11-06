@@ -136,7 +136,6 @@
                     }
                 });
                 spawn.stderr.on('data', (data) => {
-                    spawn.kill('SIGKILL');
                     return reject(data.toString());
                 });
 
