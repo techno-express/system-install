@@ -2,7 +2,7 @@ system-installer
 =======
 [![NPM](https://nodei.co/npm/system-installer.png)](https://nodei.co/npm/system-installer/)
 
-[![Dependencies Status](http://img.shields.io/david/techno-express/system-installer.svg)](https://david-dm.org/techno-express/system-installer) [![codecov](https://codecov.io/gh/techno-express/system-installer/branch/master/graph/badge.svg?token=nups0UsVPw)](https://codecov.io/gh/techno-express/system-installer) [![Maintainability](https://api.codeclimate.com/v1/badges/54f89d3ae887724ceb93/maintainability)](https://codeclimate.com/github/techno-express/system-install/maintainability) [![Release](http://img.shields.io/npm/v/system-installer.svg)](https://www.npmjs.org/package/system-installer)
+[![Dependencies Status](http://img.shields.io/david/techno-express/system-installer.svg)](https://david-dm.org/techno-express/system-installer) [![Node.js CI](https://github.com/techno-express/system-installer/workflows/Node.js%20CI/badge.svg)](https://github.com/techno-express/system-installer/actions) [![codecov](https://codecov.io/gh/techno-express/system-installer/branch/master/graph/badge.svg?token=nups0UsVPw)](https://codecov.io/gh/techno-express/system-installer) [![Maintainability](https://api.codeclimate.com/v1/badges/54f89d3ae887724ceb93/maintainability)](https://codeclimate.com/github/techno-express/system-install/maintainability) [![Release](http://img.shields.io/npm/v/system-installer.svg)](https://www.npmjs.org/package/system-installer)
 
 > Get the install command or install a package using the system packaging manager, e.g. `sudo apt-get install` for Debian-based systems.
 
