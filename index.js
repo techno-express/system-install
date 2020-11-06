@@ -106,7 +106,6 @@
             var system = whatToInstall;
             if ((args) && (!install)) system = args.concat(whatToInstall);
             if ((args) && (install)) system = args.concat(install).concat(whatToInstall);
-
             if (cmd != 'powershell') {
                 console.log('Running ' + cmd + ' ' + system);
                 const spawn = child_process.spawn(cmd, system, {
@@ -137,6 +136,11 @@
                 spawn.stderr.on('data', (data) => {
                     return reject(data.toString());
                 });
+
+                if (system.includes('node-fake-tester') && Object.getOwnPropertyDescriptor(process, 'platform').value == 'darwin') {
+                    spawn.kill('SIGKILL');
+                    return resolve('For testing only, no package installed.');
+                }
 
             }/* else if (process.platform == 'win32' && cmd == 'powershell') {
                 const PowerShell = require("powershell");

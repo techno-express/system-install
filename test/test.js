@@ -1,7 +1,6 @@
 const expect = require('chai').expect;
 const system = require('../index.js').packager;
 const installer = require('../index.js').installer;
-var testPlatformData = '';
 
 describe('Method: `packager`', function () {
     it('should return an object', function (done) {
