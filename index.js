@@ -131,7 +131,6 @@
                     }
 
                     if (data.includes('The package was not found')) {
-                        spawn.kill('SIGKILL');
                         return reject(data.toString());
                     }
                 });
