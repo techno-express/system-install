@@ -1,6 +1,6 @@
 {
   "name": "system-installer",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "Get the install command for the system package manager or auto install the package",
   "main": "index.js",
   "bin": {
@@ -12,10 +12,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/techno-express/system-install.git"
+    "url": "git+https://github.com/techno-express/system-installer.git"
   },
   "keywords": [
     "apt-get",
+    "choco",
     "chocolatey",
     "brew",
     "pacman",
@@ -40,15 +41,15 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/techno-express/system-install/issues"
+    "url": "https://github.com/techno-express/system-installer/issues"
   },
-  "homepage": "https://github.com/techno-express/system-install#readme",
+  "homepage": "https://github.com/techno-express/system-installer#readme",
   "dependencies": {
     "which": "^2.0.2"
   },
   "devDependencies": {
     "codecov": "^3.8.0",
-    "chai": "^4.1.2",
+    "chai": "^4.2.0",
     "mocha": "^7.2.0"
   }
 }
