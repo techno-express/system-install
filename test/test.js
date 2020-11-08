@@ -1,6 +1,7 @@
 const expect = require('chai').expect;
 const system = require('../index.js').packager;
 const installer = require('../index.js').installer;
+const where = require('../index.js').where;
 
 describe('Method: `packager`', function () {
     it('should return an object', function (done) {
@@ -125,5 +126,14 @@ describe('Method: `installer` install packages `unzip` and `nano`', function () 
                 expect(err).to.not.be.empty;
                 done();
             });
+    });
+});
+
+describe('Method: `where`', function () {
+    it('should return null/empty for executable not found', function (done) {
+        let found = where('node-fake-tester');
+        expect(found).to.be.null;
+        done();
+
     });
 });

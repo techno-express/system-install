@@ -8,7 +8,7 @@ var INSTALL_CMD = {
     port: 'sudo port install',
     pkgin: 'sudo pkgin install',
     choco: 'choco install',
-    powershell: "powershell ./installChocolatey.ps1",
+    powershell: "powershell 'Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))'",
     'apt-get': 'sudo apt-get install',
     yum: 'sudo yum install',
     dnf: 'sudo dnf install',
@@ -139,52 +139,70 @@ function installer(application) {
                 return resolve('For testing only, no package installed.');
             }
 
-        }/* else if (process.platform == 'win32' && cmd == 'powershell') {
-                const PowerShell = require("powershell");
-                console.log('Download and Install Chocolatey');
-                const ps = new PowerShell("Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))", {
-                    executionpolicy: 'Unrestricted'
-                });
+        }
+        /* else if (process.platform == 'win32' && cmd == 'powershell') {
+                        const PowerShell = require("powershell");
+                        console.log('Download and Install Chocolatey');
+                        const ps = new PowerShell("Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))", {
+                            executionpolicy: 'Unrestricted'
+                        });
 
-                ps.on('error', (err) => {
-                    return reject(err);
-                });
-                ps.on('output', (data) => console.log(data));
-                ps.on('error-output', (data) => {
-                    return reject(data);
-                });
+                        ps.on('error', (err) => {
+                            return reject(err);
+                        });
+                        ps.on('output', (data) => console.log(data));
+                        ps.on('error-output', (data) => {
+                            return reject(data);
+                        });
 
-                ps.on('end', () => {
-                    console.log('Running choco install ' + whatToInstall);
-                    const spawn = child_process.spawn('choco', ['install'].concat(whatToInstall), {
-                        stdio: 'pipe'
-                    });
+                        ps.on('end', () => {
+                            console.log('Running choco install ' + whatToInstall);
+                            const spawn = child_process.spawn('choco', ['install'].concat(whatToInstall), {
+                                stdio: 'pipe'
+                            });
 
-                    spawn.on('error', (err) => {
-                        return reject(err);
-                    });
-                    spawn.on('close', (code) => {
-                        return resolve(code);
-                    });
-                    spawn.on('exit', (code) => {
-                        return resolve(code);
-                    });
+                            spawn.on('error', (err) => {
+                                return reject(err);
+                            });
+                            spawn.on('close', (code) => {
+                                return resolve(code);
+                            });
+                            spawn.on('exit', (code) => {
+                                return resolve(code);
+                            });
 
-                    spawn.stdout.on('data', (data) => console.log(data.toString()));
-                    spawn.stderr.on('data', (data) => {
-                        return reject(data.toString());
-                    });
-                });
-            } */
+                            spawn.stdout.on('data', (data) => console.log(data.toString()));
+                            spawn.stderr.on('data', (data) => {
+                                return reject(data.toString());
+                            });
+                        });
+                    } */
         else {
             return reject('No package manager installed!');
         }
     });
 }
 
-function system_installer() { }
+function system_installer() {}
 
 module.exports = exports = system_installer;
 exports.default = exports;
 exports.packager = packager;
 exports.installer = installer;
+
+/**
+ * Like the unix `which` utility.
+ *
+ * Finds the first instance of a specified executable in the PATH environment variable.
+ *
+ * @param String executable
+ *
+ * @returns String|Null
+ */
+exports.where = function (executable) {
+    let found = which.sync(executable, {
+        nothrow: true
+    });
+
+    return found;
+};
