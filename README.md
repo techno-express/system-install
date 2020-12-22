@@ -6,7 +6,7 @@ system-installer
 
 > Get the install command or install a package using the system packaging manager, e.g. `sudo apt-get install` for Debian-based systems.
 
-This package differs from fork https://github.com/arve0/system-install in that it will also install the package and all necessary dependent packages from within Node JS onto host.
+This package has been replaced with [node-sys](https://www.npmjs.com/package/node-sys).
 
 `system-installer` will try to find which system packaging is installed for the given `process.platform`. If no system package manager is found, `'your_package_manager install'` is returned.
 
